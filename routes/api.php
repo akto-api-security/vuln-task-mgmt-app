@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Response;
-
+use App\Http\Procedures\TaskProcedure;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -58,3 +58,5 @@ Route::delete('/REST/tasks/{id}', function ($id) {
     return 204;
 });
 
+// JSON-RPC endpoint
+Route::rpc('/JSON-RPC/tasks', [TaskProcedure::class])->name('rpc.tasks');

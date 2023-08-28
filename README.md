@@ -1,66 +1,167 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Akto Vulnerable To Do List API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## JSON-RPC
 
-## About Laravel
+A JSON-RPC API is available at `/api/JSON-RPC/tasks`.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Creating a task
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Create a task by sending the following request
+```
+POST /api/JSON-RPC/tasks HTTP/1.1
+Host: vuln-task-mgmt-app.test
+User-Agent: curl/7.87.0
+Accept: */*
+Content-Type: application/json
+Content-Length: 112
+Connection: close
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+{
+	"jsonrpc":"2.0",
+	"method":"task@create",
+	"id":1,
+"params":{
+"name":"Get groceries",
+"done": 0
+}
+}
+```
 
-## Learning Laravel
+The response should be something like this:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```
+HTTP/1.1 200 OK
+Server: nginx/1.22.1
+Content-Type: application/json
+Connection: close
+Vary: Accept-Encoding
+X-Powered-By: PHP/8.2.8
+Cache-Control: no-cache, private
+Date: Mon, 28 Aug 2023 10:11:55 GMT
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 56
+Access-Control-Allow-Origin: *
+Content-Length: 169
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+{"id":"1","result":{"name":"Get groceries","done":0,"updated_at":"2023-08-28T10:11:55.000000Z","created_at":"2023-08-28T10:11:55.000000Z","id":20},"jsonrpc":"2.0"}
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-## Laravel Sponsors
+### List tasks
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+You can list tasks with the following request:
 
-### Premium Partners
+```
+POST /api/JSON-RPC/tasks HTTP/1.1
+Host: vuln-task-mgmt-app.test
+User-Agent: curl/7.87.0
+Accept: */*
+Content-Type: application/json
+Content-Length: 52
+Connection: close
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+{
+	"jsonrpc":"2.0",
+	"method":"task@list",
+	"id":1
+}
+```
 
-## Contributing
+The response:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
+HTTP/1.1 200 OK
+Server: nginx/1.22.1
+Content-Type: application/json
+Connection: close
+Vary: Accept-Encoding
+X-Powered-By: PHP/8.2.8
+Cache-Control: no-cache, private
+Date: Mon, 28 Aug 2023 10:17:29 GMT
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 56
+Access-Control-Allow-Origin: *
+Content-Length: 452
 
-## Code of Conduct
+{"id":"1","result":[{"id":13,"created_at":"2023-08-21T06:39:22.000000Z","updated_at":"2023-08-28T09:39:15.000000Z","name":"Buy a birthday present for Jessica","done":0},{"id":14,"created_at":"2023-08-21T06:39:29.000000Z","updated_at":"2023-08-21T06:39:29.000000Z","name":"Pick up groceries","done":0},{"id":17,"created_at":"2023-08-28T10:11:51.000000Z","updated_at":"2023-08-28T10:11:51.000000Z","name":"finish JSON-RPC API","done":0}],"jsonrpc":"2.0"}
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Delete task
 
-## Security Vulnerabilities
+The request:
+```
+POST /api/JSON-RPC/tasks HTTP/1.1
+Host: vuln-task-mgmt-app.test
+User-Agent: curl/7.87.0
+Accept: */*
+Content-Type: application/json
+Content-Length: 77
+Connection: close
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+{
+	"jsonrpc":"2.0",
+	"method":"task@delete",
+	"id":1,
+"params":{"id":20
+}
+}
+```
 
-## License
+The response:
+```
+HTTP/1.1 200 OK
+Server: nginx/1.22.1
+Content-Type: application/json
+Connection: close
+Vary: Accept-Encoding
+X-Powered-By: PHP/8.2.8
+Cache-Control: no-cache, private
+Date: Mon, 28 Aug 2023 10:17:11 GMT
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 59
+Access-Control-Allow-Origin: *
+Content-Length: 40
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+{"id":"1","result":true,"jsonrpc":"2.0"}
+```
+
+### Update task
+
+In this case, we are updating the task with id "17" as "done". Here's the request:
+
+```
+POST /api/JSON-RPC/tasks HTTP/1.1
+Host: vuln-task-mgmt-app.test
+User-Agent: curl/7.87.0
+Accept: */*
+Content-Type: application/json
+Content-Length: 88
+Connection: close
+
+{
+	"jsonrpc":"2.0",
+	"method":"task@delete",
+	"id":1,
+"params":{"id":17,
+"done":1
+}
+}
+```
+
+The response:
+```
+HTTP/1.1 200 OK
+Server: nginx/1.22.1
+Content-Type: application/json
+Connection: close
+Vary: Accept-Encoding
+X-Powered-By: PHP/8.2.8
+Cache-Control: no-cache, private
+Date: Mon, 28 Aug 2023 10:19:36 GMT
+X-RateLimit-Limit: 60
+X-RateLimit-Remaining: 59
+Access-Control-Allow-Origin: *
+Content-Length: 40
+
+{"id":"1","result":true,"jsonrpc":"2.0"}
+```
