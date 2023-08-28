@@ -1,5 +1,18 @@
 # Akto Vulnerable To Do List API
 
+## REST
+
+There is a standard JSON REST API at `/api/REST/tasks`. Routes included are:
+
+- `GET /REST/tasks`: get all tasks
+- `POST /REST/tasks`': create a task. Parameters are simply "name (string)" and "done" (boolean).
+- `PUT /REST/tasks/{id}`: update a task.
+- `DELETE /REST/tasks/{id}`: delete a task.
+
+## GraphQL
+
+The GraphQL endpoint is at `/graphql`. There is also a GraphiQL instance at `graphiql` to be used as a playground.
+
 ## JSON-RPC
 
 A JSON-RPC API is available at `/api/JSON-RPC/tasks`.
