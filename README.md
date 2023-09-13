@@ -1,5 +1,7 @@
 # Akto Vulnerable To Do List API
 
+This is a purposely vulnerable API!
+
 ## REST
 
 There is a standard JSON REST API at `/api/REST/tasks`. Routes included are:
