@@ -20,7 +20,8 @@ class TasksQuery extends Query
 
     public function type(): Type
     {
-        return GraphQL::paginate('Task'); //return paginated tasks
+        // return tasks not paginated
+        return Type::listOf(GraphQL::type('Task'));
     }
 
     public function args(): array
@@ -34,6 +35,10 @@ class TasksQuery extends Query
                 'name' => 'page',
                 'type' => Type::int(),
             ],
+            'name'=> [
+                'name' => 'name',
+                'type' => Type::string(),
+            ]
 
         ];
     }
@@ -45,11 +50,7 @@ class TasksQuery extends Query
         $select = $fields->getSelect();
         $with = $fields->getRelations();
 
-        if (!array_key_exists('limit', $args) || !array_key_exists('page', $args)) {
-            $tasks = \App\Models\Task::with($with)->select($select)->paginate(5, ['*'], 'page', 1);
-        } else {
-            $tasks = \App\Models\Task::with($with)->select($select)->paginate($args['limit'], ['*'], 'page', $args['page']);
-        }
+        $tasks = \App\Models\Task::with($with)->select($select)->paginate(1000, ['*'], 'page', 1);
 
         return $tasks;
 
