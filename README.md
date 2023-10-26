@@ -155,7 +155,7 @@ Connection: close
 
 {
 	"jsonrpc":"2.0",
-	"method":"task@delete",
+	"method":"task@update",
 	"id":1,
 "params":{"id":17,
 "done":1
